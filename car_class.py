@@ -2,7 +2,7 @@ import enum
 from platform import platform
 from typing import List
 
-class Hourly_Package:
+class Package:
   def __init__(self, duration, price, km_price, free_km):
     self.duration = duration
     self.price = price
@@ -22,17 +22,7 @@ class Car:
     self.make = make
     self.hourly_rate = hourly_rate
     self.km_price = km_price
-    self.free_km = free_km
-    self.hourly_packages: List[Hourly_Package] = []
-    self.cheapest_hourly_package_index: int = None
-    self.km_packages: List[Km_Package] = []
-    self.chosen_km_packages = {
-      "no_package": 0
-    }
+    self.packages: List[Package] = []
 
-  def add_hourly_package(self, duration, price, km_price, free_km):
-    self.hourly_packages.append(Hourly_Package(duration, price, km_price, free_km))
-
-  def add_km_package(self, kms, price):
-    self.km_packages.append(Km_Package(kms, price))
-    self.chosen_km_packages[kms] = 0
+  def add_package(self, duration, price, km_price, free_km):
+    self.hourly_packages.append(Package(duration, price, km_price, free_km))
