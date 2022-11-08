@@ -16,7 +16,8 @@ class Car:
     self.make = make
     self.hourly_rate = hourly_rate
     self.km_price = km_price
+    self.free_km = free_km
     self.packages: List[Package] = []
 
   def add_package(self, duration, price, km_price, free_km):
-    self.hourly_packages.append(Package(duration, price, km_price, free_km))
+    self.packages.append(Package(duration, price, km_price, free_km))
