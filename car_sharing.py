@@ -1,9 +1,4 @@
-from random import randint
 from car_class import Car
-import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.lines import Line2D
-from matplotlib import cm
 
 def main():
   sixt_bmw_i3 = Car('SIXT', 'BMW', 'i3', 15, 0.34, 200)
