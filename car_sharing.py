@@ -23,7 +23,7 @@ def main():
     car.add_package(duration, duration * car.hourly_rate + max(0, distance - car.free_km) * car.km_price, car.km_price, car.free_km, 'hourly')
     # node is defined by a tuple of (cost, (distance, duration) and counts)
     # where counts is a breakdown of the number per package
-    heap = [(0, (0, 0), tuple((id(package), package, 0) for package in car.packages))]
+    heap = [(0, (0, 0), tuple((package.name, package, 0) for package in car.packages))]
     visited = set()
     
     itr = 0
@@ -44,11 +44,11 @@ def main():
       remaining_km = max(0, distance - dis_dur[0])
       remaining_hrs = max(0, duration - dis_dur[1])
 
-      for _id, package, count in counts:
+      for _name, package, count in counts:
         # heuristic for finding and adding package
         if 0 < package.duration < remaining_hrs or package.duration > remaining_hrs and package.free_km >= remaining_km or remaining_hrs == 0 and package.free_km >= remaining_km:        
             new_cost = cost + package.price
-            new_counts = tuple((id(p), p, c + 1 if p == package else c) for i, p, c in counts)
+            new_counts = tuple((p.name, p, c + 1 if p == package else c) for i, p, c in counts)
             heapq.heappush(heap, (new_cost, (dis_dur[0] + package.free_km, dis_dur[1] + package.duration), new_counts))
           
   # distance = input("Type desired distance in kilometers: ")
