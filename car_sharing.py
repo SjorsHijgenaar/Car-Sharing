@@ -20,7 +20,7 @@ def main():
   y = []
 
   def find_best_package_combination(car: Car, distance, duration):
-    car.add_package(duration, duration * car.hourly_rate + max(0, distance - car.free_km) * car.km_price, car.km_price, car.free_km)
+    car.add_package(duration, duration * car.hourly_rate + max(0, distance - car.free_km) * car.km_price, car.km_price, car.free_km, 'hourly')
     # node is defined by a tuple of (cost, (distance, duration) and counts)
     # where counts is a breakdown of the number per package
     heap = [(0, (0, 0), tuple((id(package), package, 0) for package in car.packages))]
