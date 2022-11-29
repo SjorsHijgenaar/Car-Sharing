@@ -25,10 +25,13 @@ def main():
   y = []
 
   def find_best_package_combination(car: Car, distance, duration):
+    # package for buying the total dis dur hourly
     car.add_package(duration, duration * car.hourly_rate + max(0, distance - car.free_km) * car.km_price, car.km_price, car.free_km, 'hourly')
+    # package for buying remaining dis dur hourly AKA package 'free'
+    car.add_package(0, 0, car.km_price, car.free_km, 'free')
     # node is defined by a tuple of (cost, (distance, duration) and counts)
     # where counts is a breakdown of the number per package
-    heap = [(0, (0, 0), tuple((package.name, package, 0) for package in car.packages))]
+    heap = [(0, (0, 0), tuple((package.name, package, (0, 0) if package.name == 'free' else 0) for package in car.packages))]
     visited = set()
     
     itr = 0
@@ -51,10 +54,33 @@ def main():
 
       for _name, package, count in counts:
         # heuristic for finding and adding package
-        if 0 < package.duration < remaining_hrs or package.duration > remaining_hrs and package.free_km >= remaining_km or remaining_hrs == 0 and package.free_km >= remaining_km:        
+        if package.name == 'free':
+          package.price = remaining_km * car.km_price + remaining_hrs * car.hourly_rate
+        if remaining_hrs > 0: 
+          # don't buy km packages
+          if package.duration == 0:
+            continue
+          elif package.price < car.hourly_rate * remaining_hrs:
+            new_cost = cost + package.price
+            # TODO: i = p.name, replace
+            new_counts = tuple((p.name, p, c + 1 if p == package else c) for i, p, c in counts)
+            heapq.heappush(heap, (new_cost, (dis_dur[0] + package.free_km, dis_dur[1] + package.duration), new_counts))
+          else:
+            new_cost = cost + car.km_price * remaining_km
+            new_counts = tuple((p.name, p, (c[0], remaining_hrs) if p.name == 'free' else c) for i, p, c in counts)
+            heapq.heappush(heap, (new_cost, (dis_dur[0], dis_dur[1] + remaining_hrs), new_counts))
+        elif remaining_km > 0:
+          # it's always more expensive to buy remaining km with hour packages
+          if package.duration > 0 or package.free_km == 0 and package.name != 'free':
+            continue
+          elif package.price < car.km_price * remaining_km:
             new_cost = cost + package.price
             new_counts = tuple((p.name, p, c + 1 if p == package else c) for i, p, c in counts)
             heapq.heappush(heap, (new_cost, (dis_dur[0] + package.free_km, dis_dur[1] + package.duration), new_counts))
+          else:
+            new_cost = cost + car.km_price * remaining_km
+            new_counts = tuple((p.name, p, (remaining_km, c[1]) if p.name == 'free' else c) for i, p, c in counts)
+            heapq.heappush(heap, (new_cost, (dis_dur[0] + remaining_km, dis_dur[1]), new_counts))
           
   # distance = input("Type desired distance in kilometers: ")
   distance = 800
