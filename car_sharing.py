@@ -16,6 +16,11 @@ def main():
   sixt_bmw_i3.add_package(0, 63, 0.39, 250)
   sixt_bmw_i3.add_package(0, 125, 0.39, 500)
 
+  mywheels_peugeot_208 = Car('MyWheels', 'Peugeot', 'E-308', 3.75, 0.33, 0)
+  mywheels_peugeot_208.add_package(24, 37.50, 0.33, 0)
+
+  cars = [sixt_bmw_i3, mywheels_peugeot_208]
+
   x = []
   y = []
 
@@ -55,13 +60,14 @@ def main():
   distance = 800
   # duration = input("Type desired duration in hours: ")
   duration = 168
-  result = []
-  for yields in find_best_package_combination(sixt_bmw_i3, distance, duration):
-    result.append(yields)
-
-  best = heapq.heappop(result)
-  print(best)
-  plt.plot(x, y)
+  
+  for car in cars:
+    result = []
+    for yields in find_best_package_combination(car, distance, duration):
+      result.append(yields)
+    best = heapq.heappop(result)
+    print(best)
+    plt.plot(x, y)
   plt.show()
 
 
