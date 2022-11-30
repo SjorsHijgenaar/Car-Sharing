@@ -92,7 +92,7 @@ def main():
     for yields in find_best_package_combination(car, distance, duration):
       result.append(yields)
     best = heapq.heappop(result)
-    print(best)
+    print(''.join(map(str, best)).replace(", ('", "\n('"))
     plt.plot(x, y)
   plt.show()
 
