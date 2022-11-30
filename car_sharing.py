@@ -1,6 +1,5 @@
-from car_class import Package, Car
+from car_class import Car
 import heapq
-import matplotlib.pyplot as plt
 
 def main():
   sixt_bmw_i3 = Car('SIXT', 'BMW', 'i3', 0.27*60, 0.39, 200)
@@ -97,8 +96,6 @@ def main():
       result.append(yields)
     best = heapq.heappop(result)
     print(''.join(map(str, best)).replace(", ('", "\n('"))
-    plt.plot(x, y)
-  plt.show()
 
 
 if __name__ == "__main__":
