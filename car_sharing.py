@@ -1,4 +1,5 @@
-from car_class import Car
+from typing import Tuple
+from car_class import Car, Package
 import heapq
 
 def main():
@@ -91,11 +92,49 @@ def main():
   duration = 168
   
   for car in cars:
+    title = f'{car.platform} {car.model} {car.make}'
     result = []
     for yields in find_best_package_combination(car, distance, duration):
       result.append(yields)
     best = heapq.heappop(result)
-    print(''.join(map(str, best)).replace(", ('", "\n('"))
+
+    cost = best[0]
+    dis = best[1][0]
+    dur = best[1][1]
+
+    print(f'{"#"*50}')
+    print(f'#{title.center(48, " ")}#')
+    print(f'{"#"*50}')
+    print(f'{"Package".ljust(25, " ")}{"#".rjust(4, " ")}{"Dis".rjust(6, " ")}{"Dur".rjust(5, " ")}{"Cost".rjust(10, " ")}')
+    print(f'{"-"*50}')
+    
+    package_counts = best[2]
+    p: Tuple[str, Package, int]
+    cum = 0
+    for p in package_counts:
+      count = p[2]
+      if count == 0 or count == (0, 0):
+        continue
+      name = p[0]
+      if name == 'free':
+        subtotal = cost - cum      
+        print(f'{name.ljust(25, " ")}    {count[0]:>6}{count[1]:>5}  €{subtotal:7.2f}')
+      else:
+        p_dis = p[1].free_km * count
+        p_dur = p[1].duration * count
+        subtotal = count * p[1].price
+        cum += subtotal
+        print(f'{name.ljust(25, " ")}{count:>4}{p_dis:>6}{p_dur:>5}  €{subtotal:7.2f}')
+    
+    print(f'{"-"*50}')
+    print(f'{"Total".rjust(29, " ")}{dis:>6}{dur:>5}  €{cost:7.2f}')
+    print(f'{"#"*50}')
+    print(f'{"#"*50}')
+    print()
+
+    
+
+    # print(''.join(map(str, best)).replace(", ('", "\n('"))
 
 
 if __name__ == "__main__":
