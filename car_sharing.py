@@ -61,14 +61,18 @@ def main():
           if package.duration == 0:
             continue
           elif package.price < car.hourly_rate * remaining_hrs:
+            # it's cheaper to buy package than driving hourly
             new_cost = cost + package.price
             # TODO: i = n, replace
             new_counts = tuple((n, p, c + 1 if p == package else c) for n, p, c in counts)
             heapq.heappush(heap, (new_cost, (dis_dur[0] + package.free_km, dis_dur[1] + package.duration), new_counts))
           else:
+            # the package is more expensive than driving hourly
             new_cost = cost + car.km_price * remaining_km
-            new_counts = tuple((n, p, (c[0], remaining_hrs) if n == 'free' else c) for n, p, c in counts)
-            heapq.heappush(heap, (new_cost, (dis_dur[0], dis_dur[1] + remaining_hrs), new_counts))
+            # the 'free' package will only be added once to fill up remaining hrs
+            # all the free kms are then used
+            new_counts = tuple((n, p, (car.free_km, remaining_hrs) if n == 'free' else c) for n, p, c in counts)
+            heapq.heappush(heap, (new_cost, (dis_dur[0] + car.free_km, dis_dur[1] + remaining_hrs), new_counts))
         elif remaining_km > 0:
           # it's always more expensive to buy remaining km with hour packages
           if package.duration > 0 or package.free_km == 0 and package.name != 'free':
