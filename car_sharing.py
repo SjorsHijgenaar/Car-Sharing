@@ -119,6 +119,8 @@ def main():
         cum += subtotal
         print(f'{name.ljust(25, " ")}{count:>4}{p_dis:>6}{p_dur:>5}  €{subtotal:7.2f}')
     
+    if car.platform == 'MyWheels':
+      print(f'{"eigen risico verlagen".ljust(42, " ")}€   3.50')
     print(f'{"-"*50}')
     print(f'{"Total".rjust(29, " ")}{dis:>6}{dur:>5}  €{cost:7.2f}')
     print(f'{"#"*50}')
