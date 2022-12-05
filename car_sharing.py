@@ -21,9 +21,6 @@ def main():
 
   cars = [sixt_bmw_i3, mywheels_peugeot_208]
 
-  x = []
-  y = []
-
   def find_best_package_combination(car: Car, distance, duration):
     # package for buying the total dis dur hourly
     car.add_package(duration, duration * car.hourly_rate + max(0, distance - car.free_km) * car.km_price, car.km_price, car.free_km, 'hourly')
@@ -36,10 +33,6 @@ def main():
     
     itr = 0
     while heap:
-      x.append(itr)
-      y.append(len(heap))
-      itr += 1
-
       cost, dis_dur, counts = heapq.heappop(heap)
       if (cost, dis_dur, counts) in visited:
         continue
@@ -87,9 +80,9 @@ def main():
             heapq.heappush(heap, (new_cost, (dis_dur[0] + remaining_km, dis_dur[1]), new_counts))
           
   # distance = input("Type desired distance in kilometers: ")
-  distance = 800
+  distance = 117
   # duration = input("Type desired duration in hours: ")
-  duration = 168
+  duration = 6.75
   
   for car in cars:
     title = f'{car.platform} {car.model} {car.make}'
@@ -98,7 +91,7 @@ def main():
       result.append(yields)
     best = heapq.heappop(result)
 
-    cost = best[0]
+    cost = best[0] + 3.50 if car.platform == 'MyWheels' else best[0]
     dis = best[1][0]
     dur = best[1][1]
 
