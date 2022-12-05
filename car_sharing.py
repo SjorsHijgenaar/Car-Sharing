@@ -23,7 +23,7 @@ def main():
 
   def find_best_package_combination(car: Car, distance, duration):
     # package for buying the total dis dur hourly
-    car.add_package(duration, duration * car.hourly_rate + max(0, distance - car.free_km) * car.km_price, car.km_price, car.free_km, 'hourly')
+    car.add_package(duration, duration * car.hourly_rate + max(0, distance - car.free_km) * car.km_price, car.km_price, distance, 'hourly')
     # package for buying remaining dis dur hourly AKA package 'free'
     car.add_package(0, 0, car.km_price, car.free_km, 'free')
     # node is defined by a tuple of (cost, (distance, duration) and counts)
@@ -61,7 +61,7 @@ def main():
             heapq.heappush(heap, (new_cost, (dis_dur[0] + package.free_km, dis_dur[1] + package.duration), new_counts))
           else:
             # the package is more expensive than driving hourly
-            new_cost = cost + car.km_price * remaining_km
+            new_cost = cost + car.hourly_rate * remaining_hrs
             # the 'free' package will only be added once to fill up remaining hrs
             # all the free kms are then used
             new_counts = tuple((n, p, (car.free_km, remaining_hrs) if n == 'free' else c) for n, p, c in counts)
