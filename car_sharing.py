@@ -3,7 +3,7 @@ from car_class import Car, Package
 import heapq
 
 def main():
-  sixt_bmw_i3 = Car('SIXT', 'BMW', 'i3', 0.27*60, 0.39, 200)
+  sixt_bmw_i3 = Car('SIXT', 'BMW', 'i3', 0.28*60, 0.39, 200)
   sixt_bmw_i3.add_package(3, 39, 0.39, 80)
   sixt_bmw_i3.add_package(6, 55, 0.39, 120)
   sixt_bmw_i3.add_package(24, 85, 0.39, 200)
